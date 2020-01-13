@@ -1,0 +1,13 @@
+package com.uae.rules.mvr.finalscorescalculation;
+
+import com.uae.rules.mvr.facts.VehicleFact
+	
+rule "Calculate Vehicle Score"
+when
+	$vehicleFact : VehicleFact (
+							$postalCodeAreaScore : (getPostalCodeAreaScore() != null ? getPostalCodeAreaScore() : 0),
+							$annualMileageScore: (getAnnualMileageScore() != null ? getAnnualMileageScore() : 0))
+	$vehicleScore : Integer () from ($postalCodeAreaScore + $annualMileageScore)
+then
+	$vehicleFact.setScore($vehicleScore);
+end

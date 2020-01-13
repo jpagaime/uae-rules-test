@@ -1,0 +1,10 @@
+package com.uae.rules.mvr.finalscorescalculation;
+
+import com.uae.rules.mvr.facts.PolicyFact
+
+rule "Calculate Policy Score"
+when
+	$policyFact : PolicyFact ($clientYearsSinceAutoScore : (getClientYearsSinceAutoScore() != null ? getClientYearsSinceAutoScore() : 0))
+then
+	$policyFact.setScore((int)$clientYearsSinceAutoScore);
+end

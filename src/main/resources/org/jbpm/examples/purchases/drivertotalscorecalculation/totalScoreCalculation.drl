@@ -1,0 +1,16 @@
+package com.uae.rules.mvr.drivertotalscorecalculation;
+
+import com.uae.rules.mvr.facts.PolicyFact;
+import com.uae.rules.mvr.facts.VehicleFact;
+import com.uae.rules.mvr.facts.DriverFact;
+
+
+rule "Sum Scores"
+    when
+        $policyFact : PolicyFact($policyScore : score)
+        $vehiclefact : VehicleFact($vehicleScore : score)
+        $driverFact : DriverFact($driverScore : score)
+        $driverTotalScore : Integer () from ($driverScore + $vehicleScore + $policyScore )
+    then
+        $driverFact.setTotalScore($driverTotalScore);
+end

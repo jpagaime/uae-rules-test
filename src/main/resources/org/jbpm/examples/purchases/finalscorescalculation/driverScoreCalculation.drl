@@ -1,0 +1,24 @@
+package com.uae.rules.mvr.finalscorescalculation;
+
+import com.uae.rules.mvr.facts.DriverFact;
+
+rule "Sum Scores"
+    when
+        $driverFact : DriverFact($ageScore : (getAgeScore() != null ? getAgeScore() : 0),
+                                                $genderScore : (getGenderScore() != null ? getGenderScore() : 0),
+                                                $timeSinceLastMVRScore : (getTimeSinceLastMVRScore() != null ? getTimeSinceLastMVRScore() : 0),
+                                                $mvrHitScore : (getMvrHitScore() != null ? getMvrHitScore() : 0),
+                                                $maxVehiclePriceScore : (getMaxVehiclePriceScore() != null ? getMaxVehiclePriceScore() : 0),
+                                                $averageTimeMinorConvictionsLast3YearsScore : getConvictionScore("avgTimeMinorConvictionsLast3Years"),
+                                                $nbrClaimFreeYearsScore : getClaimScore("nbrClaimFreeYears"),
+                                                $nbrOfMajorConvictionsLast10YearsScore : getConvictionScore("nbrMajorConvictionsLast10Years"),
+                                                $maxAccBenefitRateGroupScore : (getMaxAccBenefitRateGroupScore() != null ? getMaxAccBenefitRateGroupScore() : 0),
+                                                $maxHorsepowerScore : (getMaxHorsepowerScore() != null ? getMaxHorsepowerScore() : 0),
+                                                $nbrCollisionsLast4YearsScore : getClaimScore("nbrCollisionsLast4Years"))
+        $driverScore : Integer () from ($ageScore + $genderScore + $timeSinceLastMVRScore + $mvrHitScore +
+                                        $maxVehiclePriceScore + $averageTimeMinorConvictionsLast3YearsScore +
+                                        $nbrClaimFreeYearsScore + $nbrOfMajorConvictionsLast10YearsScore +
+                                        $maxAccBenefitRateGroupScore + $maxHorsepowerScore + $nbrCollisionsLast4YearsScore)
+    then
+        $driverFact.setScore($driverScore);
+end
